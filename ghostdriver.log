@@ -1,0 +1,19 @@
+[INFO  - 2019-10-07T09:42:20.405Z] GhostDriver - Main - running on port 52370
+[INFO  - 2019-10-07T09:42:24.806Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2019-10-07T09:42:24.806Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.customHeaders:  - {}
+[INFO  - 2019-10-07T09:42:24.806Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-10-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2019-10-07T09:42:24.806Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: c47a9200-e8e6-11e9-ac3e-89de6a4a27d1
+[ERROR - 2019-10-07T09:42:32.085Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.onError - msg: [object ErrorEvent]
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2019-10-07T09:42:32.086Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.onError - stack:
+  handleError (https://dkzhzjn4q2tj8.cloudfront.net/main.6e709742e8de19fbe900.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2019-10-07T09:42:32.086Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.onError - msg: ReferenceError: Can't find variable: _satellite
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2019-10-07T09:42:32.086Z] Session [c47a9200-e8e6-11e9-ac3e-89de6a4a27d1] - page.onError - stack:
+  global code (https://www.dice.com/jobs?location=India&latitude=20.593684&longitude=78.96288000000004&countryCode=IN&locationPrecision=Country&radius=30&radiusUnit=mi&page=1&pageSize=20&facets=employmentType%7CpostedDate%7CworkFromHomeAvailability%7CemployerType&language=en:1268)
+
+  phantomjs://platform/console++.js:263 in error
