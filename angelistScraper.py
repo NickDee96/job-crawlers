@@ -22,8 +22,8 @@ from selenium.webdriver.common.keys import Keys
 driver=webdriver.Firefox(executable_path = 'geckodriver/geckodriver')
 
 driver.get("https://angel.co/login")
-driver.find_element_by_css_selector("#user_email").send_keys("mumeronick@gmail.com")
-driver.find_element_by_css_selector("#user_password").send_keys("Mumerowanjeri18")
+driver.find_element_by_css_selector("#user_email").send_keys("nim")
+driver.find_element_by_css_selector("#user_password").send_keys("")
 driver.find_element_by_css_selector(".c-button").click()
 driver.get("https://angel.co/jobs")
 
