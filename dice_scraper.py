@@ -7,7 +7,7 @@ url="https://www.dice.com/jobs?location=India&latitude=20.593684&longitude=78.96
 page=soup(req.get(url).text,"lxml")
 driver = webdriver.PhantomJS(executable_path="C:\\PhantomJs\\bin\phantomjs\\phantomjs.exe")
 driver.get(url)
-with open("diceIndiaJobs.csv","w",newline="") as dFile:
+with open("data/data/diceIndiaJobs.csv","w",newline="") as dFile:
     writer=csv.DictWriter(dFile,fieldnames=["Job Title","Job Link","Company Name","Company Link","Location","Job Type","Date Posted","Description"])
     writer.writeheader()
     page=soup(driver.page_source,"lxml")

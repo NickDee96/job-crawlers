@@ -27,7 +27,7 @@ else:
     opts=webdriver.FirefoxOptions()
 profile = webdriver.FirefoxProfile()
 profile.set_preference("general.useragent.override", "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>")            
-driver=webdriver.Firefox(executable_path = 'C:\\geckodriver\\geckodriver.exe',firefox_options=opts,firefox_profile=profile)
+driver=webdriver.Firefox(executable_path = 'geckodriver\\geckodriver.exe',firefox_options=opts,firefox_profile=profile)
 driver.get('https://www.linkedin.com/uas/login')
 driver.find_element_by_id('username').send_keys("nick@braveventurelabs.com")#inserting email   
 driver.find_element_by_id('password').send_keys("rWF7mWE9vq")#inserting password

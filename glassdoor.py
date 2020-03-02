@@ -6,7 +6,7 @@ import random
 import pandas as pd
 from datetime import datetime, timedelta
 import csv
-df=pd.read_csv("africaCodes.csv")
+df=pd.read_csv("data/africaCodes.csv")
 
 
 headers=(
@@ -21,7 +21,7 @@ headers=(
     {'user-agent':'Mozilla/5.0 (X11; od-database-crawler) Gecko/20100101 Firefox/52.0'},
     {'user-agent':'Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.16) Gecko/20110323 Ubuntu/10.04 (lucid) Firefox/3.6.16'},
 )
-with open('gdJobs.csv','w',newline="") as csvFile:
+with open('data/glassdoor/gdJobs.csv','w',newline="",encoding="utf-8") as csvFile:
     fileHeaders=('Job Name','Company','Link','Location','Country')
     writer=csv.DictWriter(csvFile,fieldnames=fileHeaders)
     writer.writeheader()

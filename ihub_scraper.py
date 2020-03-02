@@ -32,7 +32,7 @@ def scraper(filename):
 
 
 if __name__ == "__main__":
-    scraper("ihub.24.10.csv")
+    scraper("data/ihub.05.02.csv")
 
 
 

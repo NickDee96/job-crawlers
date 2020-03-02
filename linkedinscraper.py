@@ -81,7 +81,7 @@ class jContainer:
                 
 
 
-cookie="AQEDAStgW9sFQHE9AAABbkaSr1wAAAFuap8zXE0AvCTHUvWXU-U5rCFNfLnCZaYel45mVTZWjxEgBwq_nEIrUrnQLqPg-ywnjozoLK1UvJLCJOF15M6QB11NTnfSEmGGMMK64OSjuk4dFkGexO131XMd"
+cookie="AQEDARlpX8MC0SwQAAABcFwwcE8AAAFwgDz0T1YAQGpYMbKVI7oX6p1_LAdvV7jT1q1rDx7W39PyXfK37SJIC8mk0rd7oLY4xSb9RX74lUyACq9aRk4TfpdMlh7aR_9nU0iZ3GjBYHk36rygCeEk8sUU"
 url="https://www.linkedin.com/mwlite/search/jobs?locationId=ke:0&f_F=mgmt,it,bd&f_TP=1%2C2"
 background=False
 def getJobs(url):
@@ -92,7 +92,7 @@ def getJobs(url):
         opts=webdriver.FirefoxOptions()
     profile = webdriver.FirefoxProfile()
     profile.set_preference("general.useragent.override", "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>")            
-    driver=webdriver.Firefox(executable_path = 'C:\\geckodriver\\geckodriver.exe',firefox_options=opts,firefox_profile=profile)
+    driver=webdriver.Firefox(executable_path = 'geckodriver\\geckodriver.exe',firefox_options=opts,firefox_profile=profile)
     driver.get('https://www.linkedin.com')
     ## Adding the LinkedIn session cookie
     driver.add_cookie({
@@ -101,14 +101,17 @@ def getJobs(url):
         "domain":".www.linkedin.com"
     })
     driver.get(url)
-    element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, ".secondary"))
-    )
     try:
-        element.click()
-    except ElementClickInterceptedException:
-        time.sleep(5)
-        element.click()
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".secondary"))
+        )
+        try:
+            element.click()
+        except ElementClickInterceptedException:
+            time.sleep(5)
+            element.click()
+    except TimeoutException:
+        print("Already Clicked")
     elem=driver.find_element_by_css_selector("#search-alert-container")
     actions = ActionChains(driver)
     actions.move_to_element(elem).send_keys(Keys.SPACE)
@@ -116,8 +119,9 @@ def getJobs(url):
         actions.perform()
         print(i)
     page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
+    driver.quit()
     results=page.find_all("li",{"class":"entity-item"})
-    with open("LinkedIn.csv","w",newline="") as jFile:
+    with open("data/LinkedIn/LinkedIn.csv","w",newline="",encoding="utf-8") as jFile:
         writer=csv.DictWriter(jFile,fieldnames=["Job","Company","Location","Days posted"])
         writer.writeheader()
         for i in results:
@@ -140,7 +144,7 @@ def getJobs(url):
             print(jName)
 
 
-
+getJobs(url)
 
 
 

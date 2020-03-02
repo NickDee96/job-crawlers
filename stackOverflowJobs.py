@@ -21,19 +21,19 @@ headers=(
     {'user-agent':'Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.16) Gecko/20110323 Ubuntu/10.04 (lucid) Firefox/3.6.16'},
 )
 
-url="https://stackoverflow.com/jobs?sort=i&pg={}"
+url="https://stackoverflow.com/jobs?sort=p&pg={}"
 
-with open("stack.csv","w",newline="") as tFile:
+with open("data/stackoverflow/stack.csv","w",newline="") as tFile:
     writer=csv.DictWriter(tFile,fieldnames=["Job Title","Company","Location","Remote","Relocation","Compensation","tags"])
     writer.writeheader()
     for k in range(38): 
-        page=soup(req.get(url.format(k),headers=random.choice(headers)).text,"lxml")
-        containers=page.find_all("div",{"class":"-job-summary"})
+        page=soup(req.get(url.format(k),headers=random.choice(headers)).content.decode("utf-8"),"lxml")
+        containers=page.find_all("div",{"class":"-job"})
         for i in containers:
-            title=i.div.h2.text.strip()
-            date=i.find_all("span",{"class":"ps-absolute"})[0].text.strip()
-            company=i.find_all("div",{"class":"-company"})[0].span.text.strip()
-            location=i.find_all("div",{"class":"-company"})[0].find_all("span",{"class":"fc-black-500"})[0].text.strip().strip("- \r\n")
+            title=i.find("h2").text.strip()
+            date=i.find("div",{"class":"fc-orange-400"}).text.strip()
+            company=i.find("h3").span.text.strip()
+            location=i.find("h3").find("span",{"class":"fc-black-500"}).text.strip()
             try:
                 visa=i.find_all("span",{"class":"-visa"})[0].text.strip()
             except IndexError:
@@ -64,4 +64,7 @@ with open("stack.csv","w",newline="") as tFile:
                 "tags":",".join(tags)
             })
 
+
+with open("test.html","w",encoding="utf-8") as tFile:
+    tFile.write(str(page))
 

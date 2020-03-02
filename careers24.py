@@ -4,7 +4,7 @@ import csv
 
 murl="https://www.careers24.com/jobs/se-it/?pagesize=100&sort=dateposted&page={}"
 
-with open("careers24.csv","w",newline="") as jFile:
+with open("data/careers24/careers24.csv","w",newline="") as jFile:
     writer=csv.DictWriter(jFile,fieldnames=["JobTitle","Description","Company","Job Link","Industry","Employment Type","Location","Compensation","Date posted"])
     writer.writeheader()
     for j in range(1,18):

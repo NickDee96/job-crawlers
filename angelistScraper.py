@@ -22,7 +22,7 @@ from selenium.webdriver.common.keys import Keys
 driver=webdriver.Firefox(executable_path = 'geckodriver/geckodriver')
 
 driver.get("https://angel.co/login")
-driver.find_element_by_css_selector("#user_email").send_keys("nick@braveventurelabs.com")
+driver.find_element_by_css_selector("#user_email").send_keys("mumeronick@gmail.com")
 driver.find_element_by_css_selector("#user_password").send_keys("Mumerowanjeri18")
 driver.find_element_by_css_selector(".c-button").click()
 driver.get("https://angel.co/jobs")
@@ -30,105 +30,30 @@ driver.get("https://angel.co/jobs")
 
 
 page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-btnId=page.find("div",{"id":"main"}).find_all("div",{"class":re.compile('^styles_component*')})[1].find_all("div")[2]["class"][0]
-driver.find_element_by_css_selector("."+btnId).click()
+results=page.find_all("div",{"data-test":re.compile('StartupResult')})
 
-
-
-
-
-page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-clsName=page.find("div",{"class":"select__multi-value__remove"})["class"][0]
-driver.find_element_by_css_selector(".{} > svg:nth-child(1) > path:nth-child(1)".format(clsName)).click()
-
-driver.find_element_by_class_name("select__input").send_keys("Kenya")
-
-for i in ["Kenya","Uganda","Tanzania","South Africa","Ghana","Nigeria"]:
-    page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-    btnId=page.find("div",{"id":"main"}).find_all("div",{"class":re.compile('^styles_component*')})[1].find_all("div")[2]["class"][0]
-    driver.find_element_by_css_selector("."+btnId).click()
-    actions = ActionChains(driver)
-    actions.send_keys(i)
-    actions.pause(3)
-    actions.send_keys(Keys.ENTER)
-    actions.perform()
-
-
-driver.find_element_by_xpath('//*[@id="react-select-32-option-0"]')
-
-
-
-
-
-driver.find_element_by_css_selector("#react-select-3--value > div:nth-child(1)").click()
-countries=["Kenya","Uganda","Tanzania","South Africa","Ghana"]
-for i in countries:
-    driver.find_element_by_css_selector("#locations").send_keys(i)
-    element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "#react-select-3--option-0"))
-    )
-    element.click()
-
-
-
-
-
-
-print("Starting scroll")
-lenOfPage = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-match=False
-while(match==False):
-        lastCount = lenOfPage
-        time.sleep(10)
-        lenOfPage = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-        if lastCount==lenOfPage:
-            driver.execute_script("window.scrollTo(0, -100);")
-            pagelen=driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-            print('Scrolling at '+str(pagelen))
-            if pagelen==lenOfPage:
-                match=True
-                print("Finished Scrolling")
-        elif lastCount>100000:
-            match=True
-            print("Reached Scrolling Limit")
-
-page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-with open("test.html","w",newline="") as testFile:
-    testFile.write(str(page))
-
-
-page.find_all("")
-
-
-page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-with open("test.html","w",newline="") as testFile:
-    testFile.write(str(page))
-with open("angelistJobs_naija.csv","w",newline="") as aFile:
-    writer=csv.DictWriter(aFile,fieldnames=["Job","Category","Company","Location","Compensation","Link"])
+with open("data/angelist/AngelListings.csv","w",encoding="utf-8",newline="") as aFile:
+    writer=csv.DictWriter(aFile,fieldnames=["Job Title","Company","Location","Salary","Job_link","Company Link"])
     writer.writeheader()
-    startupRows=page.findAll("div",{"class":re.compile('^styles_width100.*')})
-    for k in range(len(startupRows)):
-        sJobs=startupRows[k].div.a["href"]
-        driver.get("https://angel.co"+sJobs+"/jobs")
-        time.sleep(2)
-        jPage=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
-        cName=jPage.find("div",{"class":re.compile('^name_*')}).div.div.h1.a.text
-        jRows=jPage.find_all("div",{"style":"height: auto; opacity: 1;"})
-        for j in range(len(jRows)):
-            jLink="https://angel.co"+jRows[j].div.a["href"]
-            jField=jRows[j].div.a.div.h6.text
-            jName=jRows[j].div.a.div.div.h4.text
-            jLoc=jRows[j].find("span",{"class":re.compile('^location.*')}).text
-            jComp=jRows[j].find("span",{"class":re.compile('^compensation.*')}).text
+    for i in range(len(results)):
+        comp_name=results[i].find("a",{"class":re.compile('^name_*')}).text
+        comp_link="https://angel.co"+results[i].find("a",{"class":re.compile('^name_*')})["href"]
+        listings=results[i].find("div",{"class":re.compile('^listings_*')}).find_all("div",{"class":re.compile('^listing_*')})
+        for j in range(len(listings)):
+            job_link="https://angel.co"+listings[j].a["href"]
+            job_title=listings[j].find("span",{"class":re.compile('^title_*')}).text
+            try:
+                salary=listings[j].find("div",{"class":re.compile('^salaryEstimate*')}).text
+                location=listings[j].find("span",{"class":"__halo_fontSizeMap_size--sm"}).text.strip(salary)
+            except AttributeError:
+                salary=""
+                location=""
             writer.writerow({
-                "Job":jName,
-                "Category":jField,
-                "Company":cName,
-                "Location":jLoc,
-                "Compensation":jComp,
-                "Link":jLink
+                "Job Title":job_title,
+                "Company":comp_name,
+                "Location":location,
+                "Salary":salary,
+                "Job_link":job_link,
+                "Company Link":comp_link
             })
-            print(j)
-        print(k)
-
-
+            print("{}  ------>>  {}".format(comp_name,job_title))

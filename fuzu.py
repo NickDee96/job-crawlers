@@ -16,24 +16,27 @@ for i in range(70):
 page=soup(driver.execute_script("return document.body.innerHTML"),'lxml')
 driver.quit()
 pButtons=page.findAll("h3",{"class","font-18 slim-titles job-titles"})
-with open("fuzu.csv","w",newline="") as fFile:
+with open("data/fuzu/fuzu.csv","w",newline="",encoding="utf-8") as fFile:
     writer=csv.DictWriter(fFile,fieldnames=["Job","Job Link","Company","Company Link","Salary Range","Contract Type"])
     writer.writeheader()
     for i in pButtons:
-        jLink=("https://www.fuzu.com"+i.span.a["href"])
-        jName=i.span.a.text
-        print("Getting for {}".format(jName))
-        page2=soup(req.get(jLink).text,"lxml")
-        cName=page2.find_all("div",{"class","mb-500"})[0].a.text
-        cLink=("https://www.fuzu.com"+page2.find_all("div",{"class","mb-500"})[0].a["href"])
-        sRange=page2.find_all("div",{"class","flex-full"})[0].findAll("p")[0].text.split(" | ")[0].replace("Salary range:\xa0","")
-        cType=page2.find_all("div",{"class","flex-full"})[0].findAll("p")[0].text.split(" | ")[1].replace("Contract type:\xa0","")
-        uDict={
-            "Job":jName,
-            "Job Link":jLink,
-            "Company":cName,
-            "Company Link":cLink,
-            "Salary Range":sRange,
-            "Contract Type":cType
-        }
-        writer.writerow(uDict)
+        try:
+            jLink=("https://www.fuzu.com"+i.span.a["href"])
+            jName=i.span.a.text
+            print("Getting for {}".format(jName))
+            page2=soup(req.get(jLink).text,"lxml")
+            cName=page2.find_all("div",{"class","mb-500"})[0].a.text
+            cLink=("https://www.fuzu.com"+page2.find_all("div",{"class","mb-500"})[0].a["href"])
+            sRange=page2.find_all("div",{"class","flex-full"})[0].findAll("p")[0].text.split(" | ")[0].replace("Salary range:\xa0","")
+            cType=page2.find_all("div",{"class","flex-full"})[0].findAll("p")[0].text.split(" | ")[1].replace("Contract type:\xa0","")
+            uDict={
+                "Job":jName,
+                "Job Link":jLink,
+                "Company":cName,
+                "Company Link":cLink,
+                "Salary Range":sRange,
+                "Contract Type":cType
+            }
+            writer.writerow(uDict)
+        except IndexError:
+            print("Skipped for {}".format(i.text))
